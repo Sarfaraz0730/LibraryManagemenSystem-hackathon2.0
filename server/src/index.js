@@ -1,1 +1,18 @@
-console.log("Hi")
+const express = require("express");
+const app = express();
+const connectDatabase = require("./database/db")
+const PORT = 8000;
+const router = require("./routes/index")
+
+
+app.use(express.json());
+app.use(router)
+connectDatabase()
+app.get("/",(req,res)=>{
+    res.send("Hi")
+})
+
+
+app.listen(PORT,()=>{
+console.log(`server is listening on ${PORT}`)
+})

@@ -1,2 +1,30 @@
-/node_modules
-/env
+# Node.js
+node_modules/
+env/
+# Logs
+logs
+*.log
+
+# Environment variables
+.env
+
+# Output of 'npm pack'
+*.tgz
+
+# IDEs and Editors
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
+
+# Dependency directories
+lib-cov/
+*.seed
+*.pid
+*.log
+*.yml
+
+# OS generated files
+.DS_Store
+Thumbs.db
