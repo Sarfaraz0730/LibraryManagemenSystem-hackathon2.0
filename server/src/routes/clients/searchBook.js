@@ -3,7 +3,7 @@ const usersModel = require('../../model/usersModel');
 const bookModel = require('../../model/bookModel');
 const router = express.Router();
 
-router.get("/",async(req,res,next)=>{
+router.post("/",async(req,res,next)=>{
     const data= req.body
     const searchByTitle  = data.title
  
@@ -20,6 +20,7 @@ router.get("/",async(req,res,next)=>{
         query.title = {$regex:new RegExp(searchByTitle,'i')}
         const searchResults = await bookModel.find({title:query.title});
         if(searchResults){
+            console.log("searchResults")
 
             return res.status(200).json(searchResults);
         }else{

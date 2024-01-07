@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #3498db;
+    overflow: hidden;
+}
+
+nav a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #2980b9;
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+}
+
+form {
+    width: 300px;
+    margin: auto;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.signup-link {
+    margin-top: 10px;
+    text-align: center;
+}
+
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="#home">Welcome To</a>
+        <a href="#books">My Library</a>
+        <a href="#borrow">Borrow</a>
+        <a href="#return">Return</a>
+        <a href="#contact">About</a>
+        <a href="signup.html">Signup</a>
+        <a href="login.html">Login</a>
+
+
+    </nav>
+    <h2>User Login</h2>
+
+    <form id="loginForm">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="button" onclick="submitLoginForm()">Login</button>
+    </form>
+
+    <div class="signup-link">
+        <p>Not registered? <a href="signup.html">Sign up here</a>.</p>
+    </div>
+
+    <script>
+        function submitLoginForm() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // You can replace this with your actual backend API endpoint for user login
+            const apiUrl = 'http://localhost:8000/login';
+
+            // Make a POST request to the backend API with user login data
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Login successful:', data);
+                    if (data.message == "Login successful") {
+                        const token = data.token;
+                        if (token) {
+                            localStorage.setItem('token', token);
+                            var storedValue = localStorage.getItem('token');
+                            console.log('Stored Value:', storedValue);
+                        } else {
+                            console.error('Token not found in data object');
+                        }
+                        alert('Login successful!');
+                        window.location.href = 'home.html';
+                    } else {
+                        window.location.href = 'login.html';
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error during login:', error);
+                    alert('Login failed. Please check your credentials.'); // You may display an error message to the user.
+                });
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        nav {
+            background-color: #3498db;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #2980b9;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            height: 50px;
+            background-color: #3498db;
+            color: white;
+            border: 1px solid #3498db;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            outline: none;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #main {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .box {
+            margin-top: 10px;
+        }
+
+        .edit-btn,
+        .delete-btn {
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 5px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn:hover,
+        .delete-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="">Home</a>
+        <a href="books.html">Books</a>
+        <a href="#borrow">Borrow</a>
+        <a href="#return">Return</a>
+        <a href="#contact">About</a>
+        <a href="signup.html">Signup</a>
+        <a href="login.html">Login</a>
+    </nav>
+
+    <div>
+        <button id="button" onclick="getAllTheBooks()">Get All Books Details</button>
+        <div id="main"></div>
+    </div>
+</body>
+
+</html>
+<script>
+    const mainDiv = document.getElementById('main');
+
+    function getAllTheBooks() {
+        const URL = "http://localhost:8000/getBooks";
+        fetch(URL)
+            .then(response => response.json())
+            .then(data => {
+                console.log("data", data);
+                mainDiv.innerHTML = ""; // Clear existing content
+
+                const table = document.createElement('table');
+                const headerRow = document.createElement('tr');
+
+                // Create table headers
+                ['Title', 'Author', 'Genre', 'Publication Year', 'Copies Available', 'Actions'].forEach(headerText => {
+                    const header = document.createElement('th');
+                    header.textContent = headerText;
+                    headerRow.appendChild(header);
+                });
+
+                table.appendChild(headerRow);
+
+                // Populate table rows with book details
+                data.forEach(book => {
+                    const row = document.createElement('tr');
+
+                    ['title', 'author', 'genre', 'publication_year', 'copies_available'].forEach(columnKey => {
+                        const cell = document.createElement('td');
+                        cell.textContent = book[columnKey];
+                        row.appendChild(cell);
+                    });
+
+                    // Create Edit and Delete buttons
+                    const actionsCell = document.createElement('td');
+                    const editButton = document.createElement('button');
+                    const deleteButton = document.createElement('button');
+
+                    editButton.classList.add('edit-btn');
+                    editButton.textContent = 'Edit';
+                    editButton.addEventListener('click', () => editBook(book._id));
+
+                    deleteButton.classList.add('delete-btn');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.addEventListener('click', () => deleteBook(book._id));
+
+                    actionsCell.appendChild(editButton);
+                    actionsCell.appendChild(deleteButton);
+
+                    row.appendChild(actionsCell);
+                    table.appendChild(row);
+                });
+
+                mainDiv.appendChild(table);
+            });
+    }
+
+    function editBook(bookId) {
+        // Implement your edit logic here
+        const editUrl =`http://localhost:8000/updateBook/${bookId}`
+        console.log('Edit book with ID:', bookId);
+    }
+
+    function deleteBook(bookId) {
+        // Implement your delete logic here
+        const deletURL = `http://localhost:8000/deleteBook/${bookId}`;
+
+        fetch(deletURL, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                console.log('Book deleted successfully with ID:', bookId);
+                // You may want to fetch data again after deletion to update the table
+                getAllTheBooks();
+            })
+            .catch(error => {
+                console.error('Error deleting book:', error);
+            });
+
+        // You may want to fetch data again after deletion to update the table
+        getAllTheBooks();
+    }
+</script>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+                body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+
+        }
+
+        nav {
+            background-color: #3498db;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #2980b9;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            height: 50px;
+            background-color: #3498db;
+            color: white;
+            border: 1px solid #3498db;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            outline: none;
+            justify-content: center;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+     #main{
+        height: 100vh;
+        width:100%;
+        border: 1px solid red;
+        display: flex;
+        flex-wrap: wrap;
+     }
+     #Book-Div{
+        height: 400px;
+        width: 300px;
+        border: 1px solid black;
+     }
+     .box{
+        border: 1px solid pink;
+        height: 400px;
+        width: 300px;
+     }
+        @media (max-width: 600px) {
+            nav a {
+                width: 100%;
+                float: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="books.html">Books</a>
+        <a href="#borrow">Borrow</a>
+        <a href="#return">Return</a>
+        <a href="#contact">About</a>
+        <a href="signup.html">Signup</a>
+        <a href="login.html">Login</a>
+
+
+    </nav>
+
+    <div>
+
+        <button id="button" onclick="getAllTheBooks()">get all the Books Details</button>
+        <div id="main">
+             
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    const mainDiv= document.getElementById('main');
+
+
+    function getAllTheBooks(){
+        const URL ="http://localhost:8000/getBooks"
+       fetch(URL).then((response)=>response.json()).then((data)=>{
+        console.log("data",data)
+        data.map((item,i)=>{
+            const div = document.createElement('div');
+             div.classList.add("box");
+             div.innerHTML=`
+             <div id="Book-Div">
+                <h4>Title : ${item.title}</h4>
+                <h6>Author :${item.author}</h6>
+                <p>genre:${item.genre}</p>
+                <p>publication_year :${item.publication_year}</p>
+                <p>copies_available :${item.copies_available}</p>
+             </div>
+             `
+             main.append(div)
+
+            
+        })
+       })
+
+    }
+</script> -->
