@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        nav {
+            background-color: #3498db;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #2980b9;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+        #adding_books{
+           
+            width: 100%;
+            height: 100px;
+            text-align: center;
+
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="books.html">Books</a>
+        <a href="issueBook.html">Borrow</a>
+        <a href="returnBook.html">Return</a>
+        <a href="">Add Book</a>
+        <a href="signup.html">Signup</a>
+        <a href="login.html">Login</a>
+    </nav>
+    <h1>Add books</h1>
+
+    <form action="/submit" method="post">
+        <label for="title">Title:</label>
+        <input type="text" name="title" required><br>
+
+        <label for="author">Author:</label>
+        <input type="text" name="author" required><br>
+
+        <label for="genre">Genre:</label>
+        <input type="text" name="genre" required><br>
+
+        <label for="publication_year">Publication Year:</label>
+        <input type="number" name="publication_year" required><br>
+
+        <label for="copies_available">Copies Available:</label>
+        <input type="number" name="copies_available" required><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="adding_books"></div>
+
+</body>
+
+</html>
+
+<script src="addBook.js"></script>

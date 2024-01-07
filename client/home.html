@@ -10,6 +10,7 @@
             margin: 0;
             font-family: 'Arial', sans-serif;
             background-color: #f2f2f2;
+           
         }
 
         nav {
@@ -109,6 +110,17 @@
         .delete-btn:hover {
             background-color: #2980b9;
         }
+        .button-div{
+            width: 100%;
+            display: flex;
+            justify-content: start;
+            border: 1px solid red;
+            gap: 20px;
+        }
+        a{
+            text-decoration: none;
+            color: white;
+        }
     </style>
 </head>
 
@@ -116,110 +128,26 @@
     <nav>
         <a href="">Home</a>
         <a href="books.html">Books</a>
-        <a href="#borrow">Borrow</a>
-        <a href="#return">Return</a>
-        <a href="#contact">About</a>
+        <a href="issueBook.html">Borrow</a>
+        <a href="returnBook.html">Return</a>
+        <a href="addBook.html">Add Book</a>
         <a href="signup.html">Signup</a>
         <a href="login.html">Login</a>
     </nav>
 
-    <div>
+   
         <button id="button" onclick="getAllTheBooks()">Get All Books Details</button>
+        <button id="button" ><a href="./addBook.html">Add Books</a></button>
+
+        
+ </div>
+
         <div id="main"></div>
     </div>
 </body>
 
 </html>
-<script>
-    const mainDiv = document.getElementById('main');
-
-    function getAllTheBooks() {
-        const URL = "http://localhost:8000/getBooks";
-        fetch(URL)
-            .then(response => response.json())
-            .then(data => {
-                console.log("data", data);
-                mainDiv.innerHTML = ""; // Clear existing content
-
-                const table = document.createElement('table');
-                const headerRow = document.createElement('tr');
-
-                // Create table headers
-                ['Title', 'Author', 'Genre', 'Publication Year', 'Copies Available', 'Actions'].forEach(headerText => {
-                    const header = document.createElement('th');
-                    header.textContent = headerText;
-                    headerRow.appendChild(header);
-                });
-
-                table.appendChild(headerRow);
-
-                // Populate table rows with book details
-                data.forEach(book => {
-                    const row = document.createElement('tr');
-
-                    ['title', 'author', 'genre', 'publication_year', 'copies_available'].forEach(columnKey => {
-                        const cell = document.createElement('td');
-                        cell.textContent = book[columnKey];
-                        row.appendChild(cell);
-                    });
-
-                    // Create Edit and Delete buttons
-                    const actionsCell = document.createElement('td');
-                    const editButton = document.createElement('button');
-                    const deleteButton = document.createElement('button');
-
-                    editButton.classList.add('edit-btn');
-                    editButton.textContent = 'Edit';
-                    editButton.addEventListener('click', () => editBook(book._id));
-
-                    deleteButton.classList.add('delete-btn');
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.addEventListener('click', () => deleteBook(book._id));
-
-                    actionsCell.appendChild(editButton);
-                    actionsCell.appendChild(deleteButton);
-
-                    row.appendChild(actionsCell);
-                    table.appendChild(row);
-                });
-
-                mainDiv.appendChild(table);
-            });
-    }
-
-    function editBook(bookId) {
-        // Implement your edit logic here
-        const editUrl =`http://localhost:8000/updateBook/${bookId}`
-        console.log('Edit book with ID:', bookId);
-    }
-
-    function deleteBook(bookId) {
-        // Implement your delete logic here
-        const deletURL = `http://localhost:8000/deleteBook/${bookId}`;
-
-        fetch(deletURL, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                console.log('Book deleted successfully with ID:', bookId);
-                // You may want to fetch data again after deletion to update the table
-                getAllTheBooks();
-            })
-            .catch(error => {
-                console.error('Error deleting book:', error);
-            });
-
-        // You may want to fetch data again after deletion to update the table
-        getAllTheBooks();
-    }
-</script>
-
+<script src="home.js"></script>
 
 <!-- <!DOCTYPE html>
 <html lang="en">
