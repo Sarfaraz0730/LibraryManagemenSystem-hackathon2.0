@@ -5,7 +5,7 @@ const bookModel = require('../../model/bookModel');
 const TransactionModel = require('../../model/TransactionModel');
 const router = express.Router();
 
-router.post("/",verify,async(req,res,next)=>{
+router.post("/",async(req,res,next)=>{
     const decoded = req.decoded;
     const data = req.body
     const memberId=data.memberId
@@ -13,9 +13,9 @@ router.post("/",verify,async(req,res,next)=>{
     const bookId =data.bookId
     console.log("TransactionData",data)
 
-    if(!decoded){
-        return res.status(401).json({message:"this user is not verified for issuing the Books, token is required "})
-    }
+    // if(!decoded){
+    //     return res.status(401).json({message:"this user is not verified for issuing the Books, token is required "})
+    // }
     if(!memberId){
         return res.status(401).json("Member id is required to issued the books, the student is not registered,else show the member id /userid ")
     }

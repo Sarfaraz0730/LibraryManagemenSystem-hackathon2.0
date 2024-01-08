@@ -58,7 +58,7 @@
 
     function editBook(bookId) {
        
-        window.location.href = "./editBook.html";
+        window.location.href = `./editBook.html?id${bookId}` ;
         const editUrl =`http://localhost:8000/updateBook/${bookId}`
         console.log('Edit book with ID:', bookId);
     }

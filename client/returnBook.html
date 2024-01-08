@@ -9,7 +9,6 @@
             margin: 0;
             font-family: 'Arial', sans-serif;
             background-color: #f2f2f2;
-           
         }
 
         nav {
@@ -29,6 +28,50 @@
         nav a:hover {
             background-color: #2980b9;
         }
+
+        form {
+            width: 300px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            width: 100%;
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #2980b9;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        #box {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -42,5 +85,67 @@
         <a href="login.html">Login</a>
     </nav>
     <h1>Return Book</h1>
+
+    <form id="returnForm">
+        <label for="bookId">Book Id:</label>
+        <input type="text" name="bookId" id="bookId">
+
+        <label for="memberId">Member Id:</label>
+        <input type="text" name="memberId" id="memberId">
+
+        <!-- Additional fields -->
+        <label for="issuedDate">Issued Date:</label>
+        <input type="text" name="issuedDate" id="issuedDate">
+
+        <label for="returnDate">Return Date:</label>
+        <input type="text" name="returnDate" id="returnDate">
+
+        <label for="reReturnDate">Re-Return Date:</label>
+        <input type="text" name="reReturnDate" id="reReturnDate">
+
+        <button type="submit">Submit</button>
+    </form>
+    <div id="box"></div>
+
+    <script>
+        const returnBookUrl = "http://localhost:8000/bookReturned";
+        const form = document.getElementById('returnForm');
+        const box = document.getElementById('box');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const bookId = document.getElementById('bookId').value;
+            const memberId = document.getElementById('memberId').value;
+            const issuedDate = document.getElementById('issuedDate').value;
+            const returnDate = document.getElementById('returnDate').value;
+            const reReturnDate = document.getElementById('reReturnDate').value;
+
+            const data = {
+                bookId: bookId,
+                memberId: memberId,
+                issuedDate: issuedDate,
+                returnDate: returnDate,
+                reReturnDate: reReturnDate
+            };
+
+            fetch(returnBookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Book Returned:', result);
+                box.innerHTML = `<p>Book Returned successfully!</p>`;
+            })
+            .catch(error => {
+                console.error('Error returning book:', error);
+                box.innerHTML = `<p>Error returning book. Please try again.</p>`;
+            });
+        });
+    </script>
 </body>
 </html>

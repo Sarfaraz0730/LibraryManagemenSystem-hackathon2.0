@@ -8,7 +8,7 @@ function submitSignupForm() {
     const apiUrl = 'http://localhost:8000/singup';
     console.log("apiUrl",apiUrl)
 
-    // Make a POST request to the backend API with user registration data
+
     fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -35,6 +35,7 @@ function submitSignupForm() {
     })
     .catch(error => {
         console.error('Error during signup:', error);
-        alert('Signup failed. Please try again.'); // You may display an error message to the user.
+        alert('Signup failed. Please try again.'); 
+
     });
 }

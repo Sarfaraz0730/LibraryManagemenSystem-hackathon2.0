@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Issue Books</title>
     <style>
-         body {
+        body {
             margin: 0;
             font-family: 'Arial', sans-serif;
             background-color: #f2f2f2;
-           
         }
 
         nav {
@@ -29,21 +28,126 @@
         nav a:hover {
             background-color: #2980b9;
         }
+
+        form {
+            width: 300px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            width: 100%;
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #2980b9;
+        }
+        h1{
+            text-align: center;
+        }
+        h2{
+            text-align: center;
+
+        }
     </style>
 </head>
 <body>
     <nav>
         <a href="home.html">Home</a>
         <a href="books.html">Books</a>
-        <a href="">Borrow</a>
+        <a href="#">Borrow</a>
         <a href="returnBook.html">Return</a>
         <a href="addBook.html">Add Book</a>
         <a href="signup.html">Signup</a>
         <a href="login.html">Login</a>
     </nav>
-    <h1>Issue  Books</h1>
+    <h1>Issue Books</h1>
+    <form id="issueForm">
+        <label for="bookId">Book Id:</label>
+        <input type="text" name="bookId" id="bookId">
+
+        <label for="memberId">Member Id:</label>
+        <input type="text" name="memberId" id="memberId">
+
+        <!-- Additional fields -->
+        <label for="issuedDate">Issued Date:</label>
+        <input type="text" name="issuedDate" id="issuedDate">
+
+        <label for="returnDate">Return Date:</label>
+        <input type="text" name="returnDate" id="returnDate">
+
+       
+
+        <button type="submit">Submit</button>
+    </form>
+    <div id="box">
+
+    </div>
+
+    <script>
+        var box =document.getElementById("box")
+        var issueBookUrl = "http://localhost:8000/bookIssued";
+        const form = document.getElementById('issueForm');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var bookId = document.getElementById('bookId').value;
+            var memberId = document.getElementById('memberId').value;
+            var issuedDate = document.getElementById('issuedDate').value;
+            var returnDate = document.getElementById('returnDate').value;
+
+
+            var data = {
+                bookId: bookId,
+                memberId: memberId,
+                issuedDate: issuedDate,
+                returnDate: returnDate,
+             
+            };
+            console.log("data",data)
+
+            fetch(issueBookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Book Issued:', result);
+                var h2 = document.createElement('h2');
+                h2.innerHTML="Book Issued successfully!"
+                box.append(h2)
+
+            })
+            .catch(error => {
+                console.error('Error issuing book:', error);
+
+            });
+        });
+    </script>
 </body>
 </html>
-<script>
-    var issueBookUrl =`http://localhost:8000/bookIssued`;
-</script>
